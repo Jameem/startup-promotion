@@ -19,6 +19,8 @@ app.get('/auth/google',
     })
 )
 
+app.get('/auth/google/callback', passport.authenticate('google'))
+
 app.get('/', (req, res) => {
     res.json({
         hi: "hahaha"
