@@ -8,17 +8,24 @@ const app = express()
 passport.use(new GoogleStrategy({
     clientID: keys.googleClientId,
     clientSecret: keys.googleClientSecret,
-    callbackURL: 'auth/google/callback'
+    callbackURL: '/auth/google/callback'
 }, (accessToken) => {
     console.log(accessToken)
 }))
+
+app.get('/auth/google', 
+    passport.authenticate('google', {
+        scope:['profile', 'email']
+    })
+)
 
 app.get('/', (req, res) => {
     res.json({
         hi: "hahaha"
     })
 })
-
-app.listen('5000')
+const PORT = process.env.PORT || 5000
+app.listen(PORT)
+console.log("Running on port", PORT)
 
 // http://localhost:5000/auth/google/callback
