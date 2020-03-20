@@ -5,6 +5,8 @@ const keys = require('../config/keys')
 
 const User = mongoose.model('users')
 
+
+
 passport.use(new GoogleStrategy({
     clientID: keys.googleClientId,
     clientSecret: keys.googleClientSecret,
@@ -14,11 +16,16 @@ passport.use(new GoogleStrategy({
         googleId: profile.id
     }).then((existingUser) => {
         if (existingUser) {
+            //User already exist
+            console.log(existingUser)
             done(null, existingUser)
         } else {
+            //Create a new User
+
             new User({
-                googleId: profile.id
-            }).save()
+                    googleId: profile.id
+                }).save()
+                .then(user => done(null, user))
         }
     })
 
