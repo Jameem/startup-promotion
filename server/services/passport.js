@@ -9,6 +9,13 @@ passport.serializeUser((user, done) => {
     done(null, user.id)
 })
 
+passport.deserializeUser((id, done) => {
+    User.findById(id)
+        .then(user => {
+            done(null, user)
+        })
+})
+
 passport.use(new GoogleStrategy({
     clientID: keys.googleClientId,
     clientSecret: keys.googleClientSecret,
@@ -19,7 +26,6 @@ passport.use(new GoogleStrategy({
     }).then((existingUser) => {
         if (existingUser) {
             //User already exist
-            console.log(existingUser)
             done(null, existingUser)
         } else {
             //Create a new User
