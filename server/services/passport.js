@@ -27,6 +27,8 @@ passport.use(
         googleId: profile.id,
       })
 
+      console.log("existingUser", existingUser)
+
       if (existingUser) {
         //User already exist
         return done(null, existingUser)
