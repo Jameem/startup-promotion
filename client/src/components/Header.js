@@ -1,4 +1,4 @@
-import React, { component, Component } from "react"
+import React, { Component } from "react"
 import { connect } from "react-redux"
 
 class Header extends Component {
@@ -17,7 +17,7 @@ class Header extends Component {
       default:
         return (
           <li>
-            <a href="">Logout</a>
+            <a href="/api/logout">Logout</a>
           </li>
         )
     }
