@@ -9,6 +9,7 @@ require("./models/User")
 require("./services/passport")
 
 const app = express()
+app.use(express.json())
 
 app.use(
   cookieSession({
@@ -21,6 +22,7 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 require("./routes/authRoutes")(app)
+require("./routes/billingRoutes")(app)
 
 mongoose.connect(keys.mongoURI, {
   useNewUrlParser: true,
