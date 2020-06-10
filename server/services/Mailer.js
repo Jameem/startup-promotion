@@ -1,4 +1,5 @@
 const sendGrid = require("sendgrid")
+const sgMail = require("@sendgrid/mail")
 const helper = sendGrid.mail
 const keys = require("../config/keys")
 
@@ -6,7 +7,7 @@ class Mailer extends helper.Mail {
   constructor({ subject, recipients }, content) {
     super()
 
-    this.sgAPi = sendgrid(keys.sendGridAPIKey)
+    this.sgAPi = sendGrid(keys.sendGridAPIKey)
     this.from_email = new helper.Email("no-reply@startuppromoter.com")
     this.subject = subject
     this.body = new helper.Content("text/html", content)
@@ -42,14 +43,19 @@ class Mailer extends helper.Mail {
   }
 
   async send() {
-    const request = this.sgAPi.emptyRequest({
-      metod: "POST",
-      path: "/v3/mail/send",
-      body: this.toJSON(),
-    })
+    try {
+      const request = this.sgAPi.emptyRequest({
+        metod: "POST",
+        path: "/v3/mail/send",
+        body: this.toJSON(),
+      })
 
-    const response = this.sgAPi.API(request)
-    return response
+      const response = await this.sgAPi.API(request)
+      // console.log(response)
+      return response
+    } catch (error) {
+      console.log(error)
+    }
   }
 }
 
