@@ -5,7 +5,7 @@ export default ({ input, label, meta: { error, touched } }) => {
     <div>
       <label>{label}</label>
       <input {...input} />
-      <label>{touched && error}</label>
+      <div className="red-text">{touched && error}</div>
     </div>
   )
 }
