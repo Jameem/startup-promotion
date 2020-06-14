@@ -2,8 +2,9 @@ import _ from "lodash"
 import React from "react"
 import { conect, connect } from "react-redux"
 import formFields from "./formFields"
+import * as actions from "../../actions"
 
-const SurveyReview = ({ onCancel, formValues }) => {
+const SurveyReview = ({ onCancel, formValues, submitSurvey }) => {
   const reviewFields = _.map(formFields, ({ name, label }) => {
     return (
       <div key={name}>
@@ -19,6 +20,13 @@ const SurveyReview = ({ onCancel, formValues }) => {
       {reviewFields}
       <button className="yellow darken-3 btn" onClick={onCancel}>
         Back
+      </button>
+      <button
+        className="green btn right darken-3"
+        onClick={() => actions.submitSurvey(formValues)}
+      >
+        Send Survey
+        <i className="material-icons right">email</i>
       </button>
     </div>
   )
