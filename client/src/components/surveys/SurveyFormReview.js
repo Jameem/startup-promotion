@@ -23,7 +23,7 @@ const SurveyReview = ({ onCancel, formValues, submitSurvey }) => {
       </button>
       <button
         className="green btn right darken-3"
-        onClick={() => actions.submitSurvey(formValues)}
+        onClick={() => submitSurvey(formValues)}
       >
         Send Survey
         <i className="material-icons right">email</i>
@@ -38,4 +38,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(SurveyReview)
+export default connect(mapStateToProps, actions)(SurveyReview)
