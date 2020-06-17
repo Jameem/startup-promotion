@@ -35,7 +35,7 @@ module.exports = (app) => {
       .each((surveyId, email, choice) => {
         Survey.updateOne(
           {
-            _id: mongoose.Types.ObjectId.fromString(surveyId),
+            _id: surveyId,
             recipients: {
               $elemMatch: { email: email, responded: false },
             },
