@@ -8,6 +8,7 @@ const Mailer = require("../services/Mailer")
 const surveyTemplate = require("../services/emailTemplates/surveyTemplate")
 
 const Survey = mongoose.model("surveys")
+
 module.exports = (app) => {
   app.get("/api/surveys/thanks", (req, res) => {
     res.send("Thanks for Voting!")
@@ -34,9 +35,9 @@ module.exports = (app) => {
       .each((surveyId, email, choice) => {
         Survey.updateOne(
           {
-            _id: surveyId,
+            _id: mongoose.Types.ObjectId.fromString(surveyId),
             recipients: {
-              $elementMatch: { email: email, responded: false },
+              $elemMatch: { email: email, responded: false },
             },
           },
           {
