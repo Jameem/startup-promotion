@@ -44,6 +44,7 @@ module.exports = (app) => {
             {
               $inc: { [choice]: 1 },
               $set: { "recipients.$.responded": true },
+              lastResponded: true,
             }
           ).exec()
         })
