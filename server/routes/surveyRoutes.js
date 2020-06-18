@@ -15,38 +15,43 @@ module.exports = (app) => {
   })
 
   app.post("/api/surveys/webhooks", (req, res) => {
-    const p = new Path("/api/surveys/:surveyId/:choice")
+    try {
+      const p = new Path("/api/surveys/:surveyId/:choice")
 
-    _.chain(req.body)
-      .map(({ email, url }) => {
-        if (url) {
-          const match = p.test(new URL(url).pathname)
+      _.chain(req.body)
+        .map(({ email, url }) => {
+          if (url) {
+            const match = p.test(new URL(url).pathname)
 
-          if (match)
-            return {
-              email,
-              surveyId: match.surveyId,
-              choice: match.choice,
-            }
-        }
-      })
-      .compact()
-      .uniqBy("email", "surveyId")
-      .each((surveyId, email, choice) => {
-        Survey.updateOne(
-          {
-            _id: surveyId,
-            recipients: {
-              $elemMatch: { email: email, responded: false },
-            },
-          },
-          {
-            $inc: { [choice]: 1 },
-            $set: { "recipients.$.responded": true },
+            if (match)
+              return {
+                email,
+                surveyId: match.surveyId,
+                choice: match.choice,
+              }
           }
-        ).exec()
-      })
-      .value()
+        })
+        .compact()
+        .uniqBy("email", "surveyId")
+        .each(({ surveyId, email, choice }) => {
+          Survey.updateOne(
+            {
+              _id: surveyId,
+              recipients: {
+                $elemMatch: { email: email, responded: false },
+              },
+            },
+            {
+              $inc: { [choice]: 1 },
+              $set: { "recipients.$.responded": true },
+            }
+          ).exec()
+        })
+        .value()
+    } catch (error) {
+      console.error(error)
+      throw error
+    }
   })
 
   app.post("/api/surveys", requireLogin, requireCredits, async (req, res) => {
