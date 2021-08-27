@@ -1,5 +1,5 @@
 # startup-promotion
-An application for sending bulk promotions for startups
+Application for sending bulk promotions for startups
 
 ## Dependencies
 
